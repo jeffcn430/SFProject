@@ -1,0 +1,37 @@
+server:
+  port: 8990
+spring:
+  thymeleaf:
+      cache: false
+      suffix: .html
+      prefix: classpath:/templates/
+      mode: LEGACYHTML5
+  datasource:
+    url: jdbc:mysql://localhost:3306/sfproject?useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+    password: qwe123
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat
+      min-idle: 3
+      initial-size: 1
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+
+      stat-view-servlet:
+        login-username: admin
+        login-password: admin
+  jpa:
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
