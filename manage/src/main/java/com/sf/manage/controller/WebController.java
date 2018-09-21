@@ -36,7 +36,7 @@ public class WebController {
      * @param model
      * @return
      */
-    @RequestMapping("user/member-list")
+    @RequestMapping("member-list")
     public ModelAndView memberList(ModelAndView model) {
         model.setViewName("member-list");
         return model;
@@ -48,7 +48,7 @@ public class WebController {
      * @param model
      * @return
      */
-    @RequestMapping("user/manage-list")
+    @RequestMapping("manage-list")
     public ModelAndView memageList(ModelAndView model) {
         model.setViewName("manage-list");
         return model;
