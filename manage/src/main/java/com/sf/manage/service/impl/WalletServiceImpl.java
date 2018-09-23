@@ -1,11 +1,14 @@
 package com.sf.manage.service.impl;
 
-import com.sf.manage.entity.Cash;
 import com.sf.manage.entity.Wallet;
+import com.sf.manage.enums.PaymentType;
+import com.sf.manage.enums.Platform;
 import com.sf.manage.repository.WalletRepository;
 import com.sf.manage.service.IWalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class WalletServiceImpl implements IWalletService {
@@ -18,14 +21,17 @@ public class WalletServiceImpl implements IWalletService {
     }
 
     @Override
-    public Wallet update() {
-        Wallet wallet = this.walletRepository.findByMemberId(1);
-        wallet.setMemberId(21212121);
-        for (Cash cash : wallet.getCashs()) {
-            cash.setTxt("222233333");
-        }
-        return this.walletRepository.save(wallet);
+    public boolean onlineRecharge(Long memberId, PaymentType pt, BigDecimal money) {
+        return false;
     }
 
+    @Override
+    public boolean offlineRecharge(Long memberId, PaymentType pt, BigDecimal money) {
+        return false;
+    }
 
+    @Override
+    public boolean platformTransfer(Platform pf, Platform tpf, BigDecimal money) {
+        return false;
+    }
 }

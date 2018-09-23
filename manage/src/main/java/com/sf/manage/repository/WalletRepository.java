@@ -6,8 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, Integer> {
-    //    @Cacheable(cacheNames="")
+    /**
+     * 通过会员id获取钱包
+     * @param memberId
+     * @return
+     */
     Wallet findByMemberId(long memberId);
-
-    //    @Cacheable(cacheNames="2121")
 }

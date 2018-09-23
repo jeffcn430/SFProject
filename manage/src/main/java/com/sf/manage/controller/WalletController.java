@@ -18,11 +18,4 @@ public class WalletController {
     public JsonResult getWalletById(@PathVariable int id) {
         return new JsonResult(walletService.getWalletById(id));
     }
-
-    @GetMapping("")
-    public JsonResult getWalletById1() {
-        return new JsonResult(walletService.update());
-    }
-
-
 }
