@@ -39,12 +39,6 @@ public class JsonResult {
         this.data = data;
     }
 
-    public JsonResult(LayTableReturn ret){
-        this.code = ResultStatus.SUCCESS.getCode();
-        this.msg = ResultStatus.SUCCESS.getMsg();
-        this.data = ret.getData();
-    }
-
     public JsonResult(Object data) {
         this.code = ResultStatus.SUCCESS.getCode();
         this.msg = ResultStatus.SUCCESS.getMsg();

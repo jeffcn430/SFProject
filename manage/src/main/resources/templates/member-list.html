@@ -3,6 +3,7 @@
 
 <head>
     <meta th:include="include/head.html"/>
+    <script type="javascript" src="javascript/common.js"></script>
 </head>
 <body class="layui-anim layui-anim-up">
 <div class="x-nav">
@@ -13,13 +14,13 @@
       </span>
 </div>
 <div class="x-body">
-    <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日" name="start" id="start">
-            <input class="layui-input" placeholder="截止日" name="end" id="end">
+    <div class="layui-row ayui-form layui-col-md12 x-so">
+        <!--<form class="layui-form layui-col-md12 x-so" action="">-->
+            <input class="layui-input" placeholder="开始日" name="startTime" id="startTime">
+            <input class="layui-input" placeholder="截止日" name="endTime" id="endTime">
             <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        </form>
+            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        <!--</form>-->
     </div>
     <!--<xblock>-->
         <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
@@ -33,18 +34,22 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
+            elem: '#startTime' //指定元素
+            , value: new Date()
         });
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#end' //指定元素
+            elem: '#endTime' //指定元素
+            , value: new Date()
         });
 
         var table = layui.table;
         table.render({
-            elem: '#membertable'
+            id: 'memberTable'
+            ,elem: '#membertable'
             ,url:'member'
+            ,parseData: parseData// 返回结果解析
             ,cols: [
                 [
                     {field:'id', width:80, title: 'ID', sort: true}
@@ -60,6 +65,23 @@
             ]
             ,page: true
             ,limits:[10,50,100]
+        });
+
+        // 重载表格
+        $('.layui-btn').on("click", function () {
+            var startTime= $("#startTime").val();
+            var endTime= $("#endTime").val();
+            var account= $("#account").val();
+            table.reload('memberTable', {
+                where: { //设定异步数据接口的额外参数，任意设
+                    startTime: startTime,
+                    endTime: endTime,
+                    account: account
+                }
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         });
 
         // 排序事件监听器
@@ -119,13 +141,5 @@
         });
     }
 </script>
-<script>var _hmt = _hmt || [];
-(function () {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();</script>
 </body>
-
 </html>
