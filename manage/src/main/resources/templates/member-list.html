@@ -3,94 +3,123 @@
 
 <head>
     <meta th:include="include/head.html"/>
-    <script type="javascript" src="javascript/common.js"></script>
+    <!--<script type="text/javascript" src="./javascript/member-list.js"></script>-->
 </head>
 <body class="layui-anim layui-anim-up">
 <div class="x-nav">
-      <span class="layui-breadcrumb">
+    <span class="layui-breadcrumb">
         <a href="">首页</a>
-        <a href="">演示</a>
-        <a><cite>导航元素</cite></a>
-      </span>
+        <a href="">用户管理</a>
+        <a><cite>代理会员</cite></a>
+    </span>
 </div>
 <div class="x-body">
     <div class="layui-row ayui-form layui-col-md12 x-so">
-        <!--<form class="layui-form layui-col-md12 x-so" action="">-->
-            <input class="layui-input" placeholder="开始日" name="startTime" id="startTime">
-            <input class="layui-input" placeholder="截止日" name="endTime" id="endTime">
-            <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        <!--</form>-->
+        <select id="type" class="layui-form-select" style="width:120px; height: 38px;">
+            <option value="">会员类型</option>
+            <option value="agent">代理</option>
+            <option value="member">会员</option>
+        </select>
+
+        <select id="status" class="layui-form-select" style="width:120px; height: 38px;">
+            <option value="">账号状态</option>
+            <option value="normal">正常</option>
+            <option value="inactive">未激活</option>
+        </select>
+
+        <select class="layui-form-select" style="width:100px; height: 38px;">
+            <option>全部</option>
+            <option>代理</option>
+            <option>会员</option>
+        </select>
+
+        <select class="layui-form-select" style="width:100px; height: 38px;">
+            <option>全部</option>
+            <option>代理</option>
+            <option>会员</option>
+        </select>
+
+        <select id="isLike" class="layui-form-select" style="width:120px; height: 38px;">
+            <option value="1">账号(精确)</option>
+            <option value="2">账号(模糊)</option>
+        </select>
+
+        <input type="text" id="account" placeholder="请输入账号" autocomplete="off" class="layui-input">
+        <input class="layui-input" placeholder="开始日" name="startTime" id="startTime">
+        <input class="layui-input" placeholder="截止日" name="endTime" id="endTime">
+        <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
     </div>
-    <!--<xblock>-->
-        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
-        <!--<button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>-->
-    <!--</xblock>-->
     <table class="layui-table" id="membertable" lay-filter="membertable"></table>
 </div>
+</body>
 <script>
-    layui.use(['laydate', 'table'], function () {
+    layui.use(['laydate', 'table', 'form'], function () {
         var laydate = layui.laydate;
-
         //执行一个laydate实例
         laydate.render({
             elem: '#startTime' //指定元素
-            , value: new Date()
+            , value: '2018-09-01'
         });
 
         //执行一个laydate实例
         laydate.render({
             elem: '#endTime' //指定元素
-            , value: new Date()
+            , value: '2018-09-30'
         });
 
         var table = layui.table;
         table.render({
             id: 'memberTable'
-            ,elem: '#membertable'
-            ,url:'member'
-            ,parseData: parseData// 返回结果解析
-            ,cols: [
+            , elem: '#membertable'
+            , url: 'member'
+            , parseData: parseData// 返回结果解析
+            , cols: [
                 [
-                    {field:'id', width:80, title: 'ID', sort: true}
-                    ,{field:'account', width:80, title: '用户名', sort: true}
-                    ,{field:'password', width:80, title: '性别', sort: true}
-                    ,{field:'nick', width:80, title: '城市'}
-                    ,{field:'nick', title: '签名', minWidth: 150}
-                    ,{field:'nick', width:80, title: '积分', sort: true}
-                    ,{field:'nick', width:80, title: '评分', sort: true}
-                    ,{field:'nick', width:80, title: '职业'}
-                    ,{field:'nick', width:135, title: '财富', sort: true}
+                    {field: 'id', title: 'ID', width: 50}
+                    , {field: 'account', title: '账号'}
+                    , {field: 'nick', title: '昵称'}
+                    , {field: 'type', title: '账号状态'}
+                    , {field: 'status', title: '账号类型'}
+                    , {field: 'nick', title: '总资产'}
+                    , {field: 'nick', title: '下级数量'}
+                    , {field: 'nick', title: '团队余额'}
+                    , {field: 'nick', title: '上级账号'}
+                    , {field: 'nick', title: '用户等级'}
+                    , {field: 'loginNum', title: '登陆次数'}
+                    , {field: 'nick', title: '操作'}
                 ]
             ]
-            ,page: true
-            ,limits:[10,50,100]
+            , limit: 15
+            , page: true
+            , limits: [15, 50, 100]
         });
 
         // 重载表格
         $('.layui-btn').on("click", function () {
-            var startTime= $("#startTime").val();
-            var endTime= $("#endTime").val();
-            var account= $("#account").val();
+            var where = { //设定异步数据接口的额外参数，任意设
+                startTime: $("#startTime").val(),
+                endTime: $("#endTime").val(),
+                account: $("#account").val(),
+                isLike: $("#isLike").val(),
+                type: $("#type").val(),
+                status: $("#status").val()
+            }
+
             table.reload('memberTable', {
-                where: { //设定异步数据接口的额外参数，任意设
-                    startTime: startTime,
-                    endTime: endTime,
-                    account: account
-                }
-                ,page: {
+                where: where
+                , page: {
                     curr: 1 //重新从第 1 页开始
                 }
             });
         });
 
         // 排序事件监听器
-        table.on('sort(membertable)', function(obj){
+        table.on('sort(membertable)', function (obj) {
             table.reload('membertable', {
                 initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
-                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
                     field: obj.field //排序字段
-                    ,order: obj.type //排序方式
+                    , order: obj.type //排序方式
                 }
             });
         });
@@ -99,47 +128,20 @@
     /*用户-停用*/
     function member_stop(obj, id) {
         layer.confirm('确认要停用吗？', function (index) {
-
             if ($(obj).attr('title') == '启用') {
-
                 //发异步把用户状态进行更改
                 $(obj).attr('title', '停用')
                 $(obj).find('i').html('&#xe62f;');
-
                 $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
                 layer.msg('已停用!', {icon: 5, time: 1000});
-
             } else {
                 $(obj).attr('title', '启用')
                 $(obj).find('i').html('&#xe601;');
-
                 $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
                 layer.msg('已启用!', {icon: 5, time: 1000});
             }
 
         });
     }
-
-    /*用户-删除*/
-    function member_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            //发异步删除数据
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!', {icon: 1, time: 1000});
-        });
-    }
-
-
-    function delAll(argument) {
-
-        var data = tableCheck.getData();
-
-        layer.confirm('确认要删除吗？' + data, function (index) {
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
-    }
 </script>
-</body>
 </html>

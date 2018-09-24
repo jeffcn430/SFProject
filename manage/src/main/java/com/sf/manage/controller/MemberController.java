@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -23,12 +22,12 @@ public class MemberController {
     /**
      * 获取会员列表
      *
-     * @param member    会员条件
-     * @param params    laytable参数
+     * @param member 会员条件
+     * @param params laytable参数
      * @return
      */
     @GetMapping("")
-    public JsonResult getMemberPage(Member member, LayTableParams params) {
+    public JsonResult getMemberPage(Member.MemberListParams member, LayTableParams params) {
         return new JsonResult(memberService.getMemberPage(member, params));
     }
 
@@ -43,7 +42,7 @@ public class MemberController {
         member.setNick("jeff");
         member.setAccount("jeff001");
         member.setPassword("qwe123");
-        member.setType(MemberType.AGENT);
+        member.setType(MemberType.agent);
         member.setCreateTime(LocalDateTime.now());
         return new JsonResult(this.memberService.addMember(member));
     }

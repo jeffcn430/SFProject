@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.thymeleaf.util.StringUtils;
 
-import java.time.LocalDate;
-
 
 @Data
 public class LayTableParams {
@@ -15,9 +13,6 @@ public class LayTableParams {
     private int limit;
     private String field;
     private String order;
-
-    LocalDate startTime;
-    LocalDate endTime;
 
     /**
      * 将layui的table参数转换为

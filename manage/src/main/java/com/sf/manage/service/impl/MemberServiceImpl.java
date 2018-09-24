@@ -11,10 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,24 +23,33 @@ public class MemberServiceImpl implements IMemberService {
     private MemberRepository memberRepository;
 
     @Override
-    public Page<Member> getMemberPage(Member member, LayTableParams params) {
-
+    public Page<Member> getMemberPage(Member.MemberListParams member, LayTableParams params) {
         //构造查询条件
         Specification<Member> spec = (Specification<Member>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            // 会员创建时间范围
-            if (!StringUtils.isEmpty(params.getStartTime())) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(LocalDate.class), params.getStartTime()));
+            // 大于起始时间
+            if (!StringUtils.isEmpty(member.getStartTime())) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(LocalDate.class), member.getStartTime()));
             }
-
-            if (!StringUtils.isEmpty(params.getStartTime())) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(LocalDate.class), params.getEndTime()));
-
+            // 小于结束时间
+            if (!StringUtils.isEmpty(member.getStartTime())) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(LocalDate.class), member.getEndTime()));
             }
-//                predicates.add(criteriaBuilder.gt(root.get("createTime").as(LocalDate.class), params.getStartTime(), params.getEndTime()));
+            // 会员类型
+            if (!StringUtils.isEmpty(member.getType())) {
+                predicates.add(criteriaBuilder.equal(root.get("type"), member.getType()));
+            }
+            // 会员类型
+            if (!StringUtils.isEmpty(member.getStatus())) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), member.getStatus()));
+            }
             // 会员账号
             if (!StringUtils.isEmpty(member.getAccount())) {
-                predicates.add(criteriaBuilder.equal(root.get("account"), member.getAccount()));
+                if (member.getIsLike() == 1) {
+                    predicates.add(criteriaBuilder.equal(root.get("account"), member.getAccount()));
+                } else if (member.getIsLike() == 2) {
+                    predicates.add(criteriaBuilder.like(root.get("account"), member.getAccount()));
+                }
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };

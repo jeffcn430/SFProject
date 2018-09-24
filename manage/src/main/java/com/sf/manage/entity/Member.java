@@ -1,8 +1,8 @@
 package com.sf.manage.entity;
 
+import com.sf.manage.enums.MemberStatus;
 import com.sf.manage.enums.MemberType;
 import lombok.Data;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -41,12 +42,52 @@ public class Member {
      */
     @Enumerated(EnumType.STRING)
     private MemberType type;
-
     /**
-     * 创建时间
+     * 用户状态
      */
-    private LocalDateTime createTime;
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status = MemberStatus.normal;
+    /**
+     * 注册时间
+     */
+    private LocalDateTime createTime = LocalDateTime.now();
+    /**
+     * 最后登陆时间
+     */
+    private LocalDateTime lastLoginTime = LocalDateTime.now();
+    /**
+     * 登陆次数
+     */
+    private Integer loginNum = 0;
 
     @Transient
     private Wallet wallet;
+
+    @Data
+    public static class MemberListParams {
+        /**
+         * 账号条件
+         */
+        private String account;
+        /**
+         * 是否模糊查询账号
+         */
+        private Integer isLike;
+        /**
+         * 会员类型
+         */
+        private String type;
+        /**
+         * 会员状态
+         */
+        private String status;
+        /**
+         * 开始时间
+         */
+        private LocalDate startTime;
+        /**
+         * 结束时间
+         */
+        private LocalDate endTime;
+    }
 }
