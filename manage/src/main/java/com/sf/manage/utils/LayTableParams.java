@@ -31,16 +31,11 @@ public class LayTableParams {
 
         Pageable pageable = null;
         if (sort == null) {
-            pageable = PageRequest.of(page, limit);
+            pageable = PageRequest.of(page - 1, limit);
         } else {
-            pageable = PageRequest.of(page, limit, sort);
+            pageable = PageRequest.of(page - 1, limit, sort);
         }
 
         return pageable;
-    }
-
-    public Pageable getPageableAndSort() {
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
-        return PageRequest.of(page - 1, limit, sort);
     }
 }

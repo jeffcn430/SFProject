@@ -19,6 +19,10 @@ public class BaseController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(LocalDate.class, (PropertyEditorSupport) (text)-> {
+//            this.setValue(LocalDate.parse(text, LOCAL_DATE));
+//        });
+
         binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) throws IllegalArgumentException {

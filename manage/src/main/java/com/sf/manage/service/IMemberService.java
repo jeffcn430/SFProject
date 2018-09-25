@@ -15,7 +15,7 @@ public interface IMemberService {
      * @return
      */
 //    @Transactional(readOnly = true)
-    Page<Member> getMemberPage(Member.MemberListParams memberListParams, LayTableParams params);
+    Page<Member> getMemberPage(Member.MemberListParams member, LayTableParams params);
 
     /**
      * 通过账号获取会员信息

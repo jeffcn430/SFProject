@@ -45,6 +45,7 @@ public class MemberServiceImpl implements IMemberService {
             }
             // 会员账号
             if (!StringUtils.isEmpty(member.getAccount())) {
+                // 是否模糊查询
                 if (member.getIsLike() == 1) {
                     predicates.add(criteriaBuilder.equal(root.get("account"), member.getAccount()));
                 } else if (member.getIsLike() == 2) {
