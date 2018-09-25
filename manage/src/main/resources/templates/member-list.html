@@ -17,14 +17,14 @@
     <div class="layui-row ayui-form layui-col-md12 x-so">
         <select id="type" class="layui-form-select" style="width:120px; height: 38px;">
             <option value="">会员类型</option>
-            <option value="agent">代理</option>
-            <option value="member">会员</option>
+            <option value="1">代理</option>
+            <option value="2">会员</option>
         </select>
 
         <select id="status" class="layui-form-select" style="width:120px; height: 38px;">
             <option value="">账号状态</option>
-            <option value="normal">正常</option>
-            <option value="inactive">未激活</option>
+            <option value="1">正常</option>
+            <option value="2">未激活</option>
         </select>
 
         <select class="layui-form-select" style="width:100px; height: 38px;">
@@ -78,15 +78,15 @@
                     {field: 'id', title: 'ID', width: 50}
                     , {field: 'account', title: '账号'}
                     , {field: 'nick', title: '昵称'}
-                    , {field: 'type', title: '账号状态'}
-                    , {field: 'status', title: '账号类型'}
+                    , {field: 'type.name', title: '账号状态', templet: '#tplType'}
+                    , {field: 'status', title: '账号类型', templet: '#tplStatus'}
                     , {field: 'nick', title: '总资产'}
                     , {field: 'nick', title: '下级数量'}
                     , {field: 'nick', title: '团队余额'}
                     , {field: 'nick', title: '上级账号'}
                     , {field: 'nick', title: '用户等级'}
                     , {field: 'loginNum', title: '登陆次数'}
-                    , {field: 'nick', title: '操作'}
+                    , {field: 'nick', title: '操作', templet: '#barDemo'}
                 ]
             ]
             , limit: 15
@@ -140,8 +140,18 @@
                 $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
                 layer.msg('已启用!', {icon: 5, time: 1000});
             }
-
         });
     }
+</script>
+
+<script type="text/html" id="tplStatus">
+    {{d.status.name}}
+</script>
+<script type="text/html" id="tplType">
+    {{d.type.name}}
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 </html>

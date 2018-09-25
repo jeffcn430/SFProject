@@ -4,6 +4,8 @@ import com.sf.manage.entity.Member;
 import com.sf.manage.utils.LayTableParams;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface IMemberService {
     /**
      * 获取会员列表
@@ -24,4 +26,6 @@ public interface IMemberService {
     Member getMemberById(String account);
 
     Member addMember(Member member);
+
+    List<Member> getMemberList();
 }

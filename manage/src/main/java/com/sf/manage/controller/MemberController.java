@@ -1,6 +1,7 @@
 package com.sf.manage.controller;
 
 import com.sf.manage.entity.Member;
+import com.sf.manage.enums.MemberStatus;
 import com.sf.manage.enums.MemberType;
 import com.sf.manage.service.IMemberService;
 import com.sf.manage.utils.JsonResult;
@@ -28,7 +29,9 @@ public class MemberController {
      */
     @GetMapping("")
     public JsonResult getMemberPage(Member.MemberListParams member, LayTableParams params) {
-        return new JsonResult(memberService.getMemberPage(member, params));
+        JsonResult ret = new JsonResult(memberService.getMemberPage(member, params));
+//        JsonResult ret = new JsonResult(memberService.getMemberList());
+        return ret;
     }
 
     @GetMapping("{account}")
@@ -43,6 +46,7 @@ public class MemberController {
         member.setAccount("jeff001");
         member.setPassword("qwe123");
         member.setType(MemberType.agent);
+        member.setStatus(MemberStatus.normal);
         member.setCreateTime(LocalDateTime.now());
         return new JsonResult(this.memberService.addMember(member));
     }

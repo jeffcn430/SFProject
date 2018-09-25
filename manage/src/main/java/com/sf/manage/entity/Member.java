@@ -60,8 +60,7 @@ public class Member {
      */
     private Integer loginNum = 0;
 
-    @Transient
-    private Wallet wallet;
+
 
     @Data
     public static class MemberListParams {
@@ -76,11 +75,11 @@ public class Member {
         /**
          * 会员类型
          */
-        private String type;
+        private MemberType type;
         /**
          * 会员状态
          */
-        private String status;
+        private MemberStatus status;
         /**
          * 开始时间
          */

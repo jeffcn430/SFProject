@@ -1,5 +1,8 @@
 package com.sf.manage.controller;
 
+import com.sf.manage.enums.MemberStatus;
+import com.sf.manage.enums.MemberType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -27,6 +30,25 @@ public class BaseController {
             @Override
             public void setAsText(String text) throws IllegalArgumentException {
                 this.setValue(LocalDate.parse(text, LOCAL_DATE_TIME));
+            }
+        });
+
+        binder.registerCustomEditor(MemberStatus.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if(StringUtils.hasText(text)){
+                    this.setValue(MemberStatus.getEnum(text));
+                }
+            }
+        });
+
+        binder.registerCustomEditor(MemberType.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if(!text.isEmpty()){
+                    this.setValue(MemberType.getEnum(text));
+                }
+
             }
         });
     }

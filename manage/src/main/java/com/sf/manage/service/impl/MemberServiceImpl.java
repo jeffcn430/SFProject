@@ -67,4 +67,9 @@ public class MemberServiceImpl implements IMemberService {
     public Member addMember(Member member) {
         return this.memberRepository.save(member);
     }
+
+    @Override
+    public List<Member> getMemberList() {
+        return this.memberRepository.findAll();
+    }
 }

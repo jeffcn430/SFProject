@@ -9,8 +9,8 @@ import org.thymeleaf.util.StringUtils;
 
 @Data
 public class LayTableParams {
-    private int page;
-    private int limit;
+    private int page = 1;
+    private int limit = 10;
     private String field;
     private String order;
 
@@ -31,9 +31,9 @@ public class LayTableParams {
 
         Pageable pageable = null;
         if (sort == null) {
-            pageable = PageRequest.of(page - 1, limit);
+            pageable = PageRequest.of(page, limit);
         } else {
-            pageable = PageRequest.of(page - 1, limit, sort);
+            pageable = PageRequest.of(page, limit, sort);
         }
 
         return pageable;
